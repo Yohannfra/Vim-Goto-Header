@@ -3,7 +3,7 @@ Vim Goto-Header is a script i made to quickly jump to header files with vim.\
 It can be use for both c or cpp.
 
 Example :\
-![alt text](img/gif2.gif "Utilisation example")
+![alt text](.github/gif2.gif "Utilisation example")
 
 ## Dependencies
 By default Goto-Header uses [fd](https://github.com/sharkdp/fd) (a find alternative) to look for headers.\
@@ -59,4 +59,4 @@ Now you'll just need to press F12 on a line like one of those and it will open i
 If Vim Goto-Header finds more than one header it will show you a little prompt and you'll have
 to chose which one.
 
-![alt text](img/prompt_vimgotoheader.png "Prompt example")
+![alt text](.github/prompt_vimgotoheader.png "Prompt example")
