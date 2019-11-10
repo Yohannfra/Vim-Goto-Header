@@ -2,8 +2,6 @@
 " Assouline Yohann
 " October 2019
 
-let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
-let g:fd_command = "fd -t f -s -L"
 
 function! Strip(input_string)
     return substitute(a:input_string, ' ', '', 'g')
@@ -11,6 +9,13 @@ endfunction
 
 function! GotoHeader()
     let current_line = Strip(getline('.'))
+
+    if !exists("g:goto_header_includes_dirs")
+        let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
+    endif
+    if !exists("g:fd_command")
+        let g:goto_header_fd_command = "fd -t f -s -L"
+    endif
 
     " Some error handling
     if stridx(current_line, "#include") == -1
@@ -50,7 +55,7 @@ function! GotoHeader()
 
     let info_find = []
     for dir in g:goto_header_includes_dirs
-        let info_find = systemlist(g:fd_command . ' ^' . current_line . '$ ' . dir . ' 2> /dev/null')
+        let info_find = systemlist(g:goto_header_fd_command . ' ^' . current_line . '$ ' . dir . ' 2> /dev/null')
         if len(info_find) != 0
             break
         endif
