@@ -33,7 +33,7 @@ To change the directories or the order you put this in your .vimrc
 ```vim
 let g:goto_header_includes_dirs = ["DIR1", "DIR2", "DIR3.", "DIR4"]
 
-example:
+" example:
 let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
 ```
 
