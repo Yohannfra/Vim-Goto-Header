@@ -50,7 +50,7 @@ nnoremap <F12> :GotoHeader <CR>
 imap <F12> <Esc>:GotoHeader <CR>
 ```
 
-Now you'll just need to press F12 on a line like one of those and it will open it the corresponding file in a new tab
+Now you'll just need to press F12 on a line like one of those and it will open the corresponding file in a new tab
 ```c
 #include <stdio.h>
 #include "my_header.hpp"
