@@ -2,7 +2,6 @@
 " Assouline Yohann
 " October 2019
 
-
 function! Strip(input_string)
     return substitute(a:input_string, ' ', '', 'g')
 endfunction
@@ -13,10 +12,18 @@ function! GotoHeader()
     if !exists("g:goto_header_includes_dirs")
         let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
     endif
-    if !exists("g:fd_command")
-        let g:goto_header_fd_command = "fd -t f -s -L"
+    if exists('g:goto_header_use_find')
+        let use_find = g:goto_header_use_find
+    else
+        let use_find = 0
     endif
-
+    if !exists("g:goto_header_search_flags")
+        if use_find
+            let g:goto_header_search_flags = "-type f"
+        else
+            let g:goto_header_search_flags = "-t f -s"
+        endif
+    endif
     " Some error handling
     if stridx(current_line, "#include") == -1
         echo "No header detected in this line"
@@ -50,12 +57,13 @@ function! GotoHeader()
     " Delete CLRF
     let current_line = substitute(current_line, '', '', 'g')
 
-    " Some debug
-    echo "Searching for " . current_line . " ..."
-
     let info_find = []
     for dir in g:goto_header_includes_dirs
-        let info_find = systemlist(g:goto_header_fd_command . ' ^' . current_line . '$ ' . dir . ' 2> /dev/null')
+        if use_find == 0
+            let info_find = systemlist('fd -L ' . g:goto_header_search_flags . ' ^' . current_line . '$ ' . dir . ' 2> /dev/null')
+        else
+            let info_find = systemlist('find -L ' . dir . ' ' .  g:goto_header_search_flags . ' -name ' . current_line . ' 2> /dev/null')
+        endif
         if len(info_find) != 0
             break
         endif
