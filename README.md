@@ -83,3 +83,7 @@ If Vim Goto-Header finds more than one header it will show you a little prompt a
 to chose which one.
 
 ![alt text](.github/prompt_vimgotoheader.png "Prompt example")
+
+## License
+
+This project is licensed under the terms of the MIT license.
