@@ -8,7 +8,7 @@ Example :\
 ## Dependencies
 By default Goto-Header uses [fd](https://github.com/sharkdp/fd) (a find alternative) to look for headers.\
 To install it on your system see : https://github.com/sharkdp/fd#installation \
-If you want to use find instead of fd refer to the [configuration](#Configuration) section.
+If you want to use find instead refer to the [configuration](#Configuration) section.
 
 ## Installation
 
@@ -51,7 +51,7 @@ Both fd and find use -L flag (follow symlink). You can't change it using the fol
 
 You can customize other fd/find flags by putting this in your .vimrc
 ```vim
-let g:goto_header_fd_command = "fd -t f -s" " Use any flag you want except -L
+let g:goto_header_fd_command = "-t f -s" " Use any flag you want except -L
 " or if you want to use find
 let g:goto_header_search_flags = "-type f" " Use any flag you want except -L
 ```
