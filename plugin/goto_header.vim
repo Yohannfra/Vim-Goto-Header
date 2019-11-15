@@ -87,4 +87,4 @@ function! GotoHeader()
 
 endfunction
 
-command GotoHeader execute GotoHeader()
+command! GotoHeader execute GotoHeader()
