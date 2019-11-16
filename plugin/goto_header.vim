@@ -82,6 +82,9 @@ function! GotoHeader()
         endfor
 
         let index = input("Select the file you want : ")
+        if len(index) == 0
+            return
+        endif
         let index = str2nr(index, 10)
         if index > c
             echo "\n"
