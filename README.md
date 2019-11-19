@@ -44,14 +44,20 @@ let g:goto_header_includes_dirs = ["DIR1", "DIR2", "DIR3.", "DIR4"]
 " example:
 let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
 ```
-*** ONLY IF YOU USE FD ***
-If you want to exclude directories from the search path because you're sure there are no header in those or if you just want to avoid those directories.\
+#### Exclude Directories (ONLY IF YOU USE FD)
+If you want to exclude directories from the search path.\
 Put this in your .vimrc
 ```vim
 let g:goto_header_excludes_dirs = ["DIR1", "DIR2", "DIR3", "DIR4"]
 
 " example
+" It uses the exclude feature of fd, dont put full path , just the directory name.
+
+" Good
 let g:goto_header_excludes_dirs = ["Music", "Logiciels", "Pictures", "Downloads"]
+
+" Bad
+let g:goto_header_excludes_dirs = ["~/Music", "~/Logiciels", "~/Pictures", "~/Downloads"]
 ```
 #### Flags
 
@@ -71,6 +77,7 @@ The default configuration is the following one:
 let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
 let g:goto_header_use_find = 0      " keep using fd
 let g:goto_header_search_flags = "-t f -s"
+let g:goto_header_excludes_dirs = []
 ```
 
 ## Usage
