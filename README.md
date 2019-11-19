@@ -44,7 +44,15 @@ let g:goto_header_includes_dirs = ["DIR1", "DIR2", "DIR3.", "DIR4"]
 " example:
 let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
 ```
+*** ONLY IF YOU USE FD ***
+If you want to exclude directories from the search path because you're sure there are no header in those or if you just want to avoid those directories.\
+Put this in your .vimrc
+```vim
+let g:goto_header_excludes_dirs = ["DIR1", "DIR2", "DIR3", "DIR4"]
 
+" example
+let g:goto_header_excludes_dirs = ["Music", "Logiciels", "Pictures", "Downloads"]
+```
 #### Flags
 
 Both fd and find use -L flag (follow symlink). You can't change it using the following lines.

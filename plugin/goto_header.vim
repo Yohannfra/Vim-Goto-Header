@@ -12,13 +12,14 @@ function! GotoHeader()
     if !exists("g:goto_header_includes_dirs")
         let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
     endif
-    if exists('g:goto_header_use_find')
-        let use_find = g:goto_header_use_find
-    else
-        let use_find = 0
+    if !exists('g:goto_header_use_find')
+        let g:goto_header_use_find = 0
+    endif
+    if !exists('g:goto_header_excludes_dirs')
+        g:goto_header_excludes_dirs = []
     endif
     if !exists("g:goto_header_search_flags")
-        if use_find
+        if g:goto_header_use_find
             let g:goto_header_search_flags = "-type f"
         else
             let g:goto_header_search_flags = "-t f -s"
@@ -57,10 +58,17 @@ function! GotoHeader()
     " Delete CLRF
     let current_line = substitute(current_line, '', '', 'g')
 
+    if g:goto_header_use_find == 0
+        let exclude_command = " "
+        for dir in g:goto_header_excludes_dirs
+            let exclude_command = exclude_command . "--exclude " . dir . ' '
+        endfor
+    endif
+
     let info_find = []
     for dir in g:goto_header_includes_dirs
-        if use_find == 0
-            let info_find = systemlist('fd -L ' . g:goto_header_search_flags . ' ^' . current_line . '$ ' . dir . ' 2> /dev/null')
+        if g:goto_header_use_find == 0
+            let info_find = systemlist('fd -L ' . g:goto_header_search_flags . exclude_command .' ^' . current_line . '$ ' . dir . ' 2> /dev/null')
         else
             let info_find = systemlist('find -L ' . dir . ' ' .  g:goto_header_search_flags . ' -name ' . current_line . ' 2> /dev/null')
         endif
@@ -68,7 +76,6 @@ function! GotoHeader()
             break
         endif
     endfor
-
     if len(info_find) != 0
         if len(info_find) == 1
             execute ":tabedit " . info_find[0]
@@ -95,7 +102,6 @@ function! GotoHeader()
     else
         echo "Couldn't find " . current_line
     endif
-
 endfunction
 
 command! GotoHeader execute GotoHeader()
