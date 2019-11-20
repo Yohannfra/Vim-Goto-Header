@@ -30,6 +30,13 @@ To use find instead of fd just put this line in your .vimrc
 let g:goto_header_use_find = 1 " By default it's value is 0
 ```
 
+### How to open the file
+By default the file you open will be in the same tab.\
+If you want to open the file in a new tab put this in your .vimrc
+```vim
+let g:goto_header_open_in_new_tab = 1
+```
+
 #### Directories
 By default the script will look in those directories (in this order):
 - .
@@ -71,6 +78,7 @@ The default configuration is the following one:
 let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
 let g:goto_header_use_find = 0      " keep using fd
 let g:goto_header_search_flags = "-t f -s"
+let g:goto_header_open_in_new_tab = 0
 ```
 
 ## Usage
