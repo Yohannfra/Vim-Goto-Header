@@ -40,7 +40,7 @@ function! s:CheckConfigVals()
         let g:goto_header_use_find = 0
     endif
     if !exists('g:goto_header_excludes_dirs')
-        g:goto_header_excludes_dirs = []
+        let g:goto_header_excludes_dirs = []
     endif
     if !exists('g:goto_header_open_in_new_tab')
         let g:goto_header_open_in_new_tab = 0
