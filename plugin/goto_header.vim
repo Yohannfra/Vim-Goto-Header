@@ -2,10 +2,6 @@
 " Assouline Yohann
 " October 2019
 
-function! s:Strip(input_string)
-    return substitute(a:input_string, ' ', '', 'g')
-endfunction
-
 function! s:GetHearderName(current_line)
     if stridx(a:current_line, "#include") == -1
         echo "No header detected in this line"
@@ -64,7 +60,7 @@ function! s:OpenFile(fp)
 endfunction
 
 function! GotoHeader()
-    let l:current_line = s:Strip(getline('.'))
+    let l:current_line = substitute(getline('.'), ' ', '', 'g')
     let s:path = ""
     call s:CheckConfigVals()
 
