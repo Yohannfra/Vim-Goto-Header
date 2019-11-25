@@ -11,25 +11,26 @@ function! s:GetHearderName(current_line)
         echo "No header detected in this line"
         return -1
     endif
-    let current_line = a:current_line[8:]
-    if stridx(current_line, "\"") != -1
-        let current_line = substitute(current_line, '"', '', 'g')
-    elseif stridx(current_line, '<') != -1 && stridx(current_line, '>') != -1
-        let current_line = substitute(current_line, '<', '', 'g')
-        let current_line = substitute(current_line, '>', '', 'g')
+    let l:current_line = a:current_line[8:]
+    if stridx(l:current_line, "\"") != -1
+        let l:current_line = substitute(l:current_line, '"', '', 'g')
+    elseif stridx(l:current_line, '<') != -1 && stridx(l:current_line, '>') != -1
+        let l:current_line = substitute(l:current_line, '<', '', 'g')
+        let l:current_line = substitute(l:current_line, '>', '', 'g')
     else
-        echo "Invalid line : " . current_line
+        echo "Invalid line : " . l:current_line
         return -1
     endif
 
     while 1
-        let index = stridx(current_line, "/")
-        if index == -1
+        let l:index = stridx(l:current_line, "/")
+        if l:index == -1
             break
         endif
-        let current_line = current_line[index + 1:]
+        let s:path = s:path . l:current_line[0:l:index]
+        let l:current_line = l:current_line[l:index + 1:]
     endwhile
-    return current_line
+    return l:current_line
 endfunction
 
 function! s:CheckConfigVals()
@@ -64,7 +65,7 @@ endfunction
 
 function! GotoHeader()
     let l:current_line = s:Strip(getline('.'))
-
+    let s:path = ""
     call s:CheckConfigVals()
 
     let l:current_line = s:GetHearderName(l:current_line)
@@ -107,10 +108,18 @@ function! GotoHeader()
 
         let c = 0
         for i in l:info_find
-            echo c . " :  " . i
-            let c += 1
+            if stridx(i, s:path) != -1
+                echo c . " :  " . i
+                let c += 1
+            else
+                call remove(l:info_find, c)
+            endif
         endfor
 
+        if c == 1
+            call s:OpenFile(l:info_find[0])
+            return
+        endif
         let l:index = input("Select the file you want : ")
         if len(l:index) == 0
             return
