@@ -132,4 +132,4 @@ function! GotoHeader()
     endif
 endfunction
 
-command! GotoHeader execute GotoHeader()
+command! GotoHeader :call GotoHeader()
