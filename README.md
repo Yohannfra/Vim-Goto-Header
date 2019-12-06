@@ -79,21 +79,9 @@ let g:goto_header_search_flags = "-type f" " Use any flag you want except -L
 
 #### Prompt
 
-If you want to print a shorter path in the prompt you can use this variable:
+If you want to print a shorter path in the prompt (usefull if your have a small terminal window)
 ```vim
-g:goto_header_use_shorter_path
-
-" If you don't want to shorten anything set it to -1
-let g:goto_header_use_shorter_path = -1
-
-" Else you can specify the len of each dir in the path
-" The number must be >= 0
-let g:goto_header_use_shorter_path = 3
-
-" This gives something like that:
-" Des/My_/inc/my_header.h
-" instead of
-" Desktop/My_project/includes/my_header.h
+g:goto_header_use_shorter_path = 1
 ```
 
 #### By default
@@ -105,7 +93,7 @@ let g:goto_header_use_find = 0      " keep using fd
 let g:goto_header_search_flags = "-t f -s"
 let g:goto_header_excludes_dirs = []
 let g:goto_header_open_in_new_tab = 0
-let g:goto_header_use_shorter_path = -1
+let g:goto_header_use_shorter_path = 0
 ```
 
 ## Usage

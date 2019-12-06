@@ -46,7 +46,7 @@ function! s:CheckConfigVals()
         endif
     endif
     if !exists('g:goto_header_use_shorter_path')
-        let g:goto_header_use_shorter_path = -1
+        let g:goto_header_use_shorter_path = 0
     endif
 endfunction
 
@@ -59,22 +59,28 @@ function! s:OpenFile(fp)
 endfunction
 
 function! s:ShortenPath(path)
-    if g:goto_header_use_shorter_path == -1 ||
-                \ len(a:path) < g:goto_header_use_shorter_path||
-                \ stridx(a:path, '/') == -1
+    if g:goto_header_use_shorter_path == 0
         return a:path
     endif
-    let shorten_path = ""  . a:path[0] ==# '/' ? '/' : ""
-    let path_splitted = split(a:path, '/')
-    for p in path_splitted
-        if p !=# path_splitted[len(path_splitted) - 1]
-            let shorten_path = shorten_path .
-                        \ p[0:g:goto_header_use_shorter_path] . '/'
-        else
-            let shorten_path = shorten_path . p
+    let l:laslen = -1
+    let l:path = a:path
+    while len(l:path) > &columns - 5
+        let shorten_path = ""  . l:path[0] ==# '/' ? '/' : ""
+        let path_splitted = split(l:path, '/')
+        for p in path_splitted
+            if p !=# path_splitted[len(path_splitted) - 1]
+                let shorten_path = shorten_path . p[0: len(p) - 2] . '/'
+            else
+                let shorten_path = shorten_path . p
+            endif
+        endfor
+        let l:path = shorten_path
+        if len(l:path) == l:laslen
+            break
         endif
-    endfor
-    return shorten_path
+        let l:laslen = len(l:path)
+    endwhile
+    return l:path
 endfunction
 
 function! s:GetFindResult(current_line)
