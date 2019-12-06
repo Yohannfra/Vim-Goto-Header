@@ -45,6 +45,9 @@ function! s:CheckConfigVals()
             let g:goto_header_search_flags = "-t f -s"
         endif
     endif
+    if !exists('g:goto_header_use_shorter_path')
+        let g:goto_header_use_shorter_path = -1
+    endif
 endfunction
 
 function! s:OpenFile(fp)
@@ -55,22 +58,32 @@ function! s:OpenFile(fp)
     endif
 endfunction
 
-function! goto_header#GotoHeader()
-    let l:current_line = substitute(getline('.'), ' ', '', 'g')
-    let s:path = ""
-    call s:CheckConfigVals()
-
-    let l:current_line = s:GetHearderName(l:current_line)
-    if l:current_line == -1
-        return
+function! s:ShortenPath(path)
+    if g:goto_header_use_shorter_path == -1 ||
+                \ len(a:path) < g:goto_header_use_shorter_path||
+                \ stridx(a:path, '/') == -1
+        return a:path
     endif
+    let shorten_path = ""  . a:path[0] ==# '/' ? '/' : ""
+    let path_splitted = split(a:path, '/')
+    for p in path_splitted
+        if p !=# path_splitted[len(path_splitted) - 1]
+            let shorten_path = shorten_path .
+                        \ p[0:g:goto_header_use_shorter_path] . '/'
+        else
+            let shorten_path = shorten_path . p
+        endif
+    endfor
+    return shorten_path
+endfunction
 
+function! s:GetFindResult(current_line)
     " if stridx(current_line, "+") != -1  " TODO
         " let current_line = substitute(current_line, '+', '\\+', 'g')
     " endif
 
     " Replace . with \. (because fd use regex)
-    let l:current_line = substitute(l:current_line, '\.', '\\.', 'g')
+    let l:current_line = substitute(a:current_line, '\.', '\\.', 'g')
     " Delete CLRF
     let l:current_line = substitute(l:current_line, '', '', 'g')
 
@@ -92,6 +105,20 @@ function! goto_header#GotoHeader()
             break
         endif
     endfor
+    return info_find
+endfunction
+
+function! goto_header#GotoHeader()
+    let l:current_line = substitute(getline('.'), ' ', '', 'g')
+    let s:path = ""
+    call s:CheckConfigVals()
+
+    let l:current_line = s:GetHearderName(l:current_line)
+    if l:current_line == -1
+        return
+    endif
+
+    let l:info_find = s:GetFindResult(l:current_line)
     if len(l:info_find) != 0
         if len(l:info_find) == 1
             call s:OpenFile(l:info_find[0])
@@ -101,6 +128,7 @@ function! goto_header#GotoHeader()
         let c = 0
         for i in l:info_find
             if stridx(i, s:path) != -1
+                let i = s:ShortenPath(i)
                 echo c . " :  " . i
                 let c += 1
             else
