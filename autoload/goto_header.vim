@@ -151,7 +151,7 @@ function! goto_header#GotoHeader()
             return
         endif
         let l:index = str2nr(l:index, 10)
-        if l:index > c
+        if l:index > c - 1
             echo "\n"
             echoerr "Invalid index : " . l:index
             return
