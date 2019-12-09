@@ -1,5 +1,6 @@
 # Vim Goto-Header
 Vim Goto-Header is a plugin I made to quickly jump to header files with vim/neovim.\
+It can also be used to jump back and forth between .c/.h or .cpp/.hpp.\
 It can be use for both c or cpp.
 
 Example :\
@@ -98,10 +99,15 @@ let g:goto_header_use_shorter_path = 0
 
 ## Usage
 
-put the following line in your .vimrc to map F12
+Put the following lines in your .vimrc to map F12 to search header under the cursor
 ```vim
 nnoremap <F12> :GotoHeader <CR>
 imap <F12> <Esc>:GotoHeader <CR>
+```
+
+Put the following lines in your .vimrc to map gh to switch between .c/.h or .cpp/.hpp
+```vim
+nnoremap gh :GotoHeaderSwitch <CR>
 ```
 
 Now you'll just need to press F12 on a line like one of those and it will open the corresponding file in a new tab

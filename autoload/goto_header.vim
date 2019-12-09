@@ -114,17 +114,8 @@ function! s:GetFindResult(current_line)
     return info_find
 endfunction
 
-function! goto_header#GotoHeader()
-    let l:current_line = substitute(getline('.'), ' ', '', 'g')
-    let s:path = ""
-    call s:CheckConfigVals()
-
-    let l:current_line = s:GetHearderName(l:current_line)
-    if l:current_line == -1
-        return
-    endif
-
-    let l:info_find = s:GetFindResult(l:current_line)
+function! s:DisplayPrompt(info_find, current_line)
+    let l:info_find = a:info_find
     if len(l:info_find) != 0
         if len(l:info_find) == 1
             call s:OpenFile(l:info_find[0])
@@ -158,6 +149,45 @@ function! goto_header#GotoHeader()
         endif
             call s:OpenFile(l:info_find[l:index])
     else
-        echo "Couldn't find " . l:current_line
+        echo "Couldn't find " . a:current_line
+    endif
+endfunction
+
+function! goto_header#GotoHeader()
+    let l:current_line = substitute(getline('.'), ' ', '', 'g')
+    let s:path = ""
+    call s:CheckConfigVals()
+
+    let l:current_line = s:GetHearderName(l:current_line)
+    if l:current_line == -1
+        return
+    endif
+
+    let l:info_find = s:GetFindResult(l:current_line)
+    call s:DisplayPrompt(l:info_find, l:current_line)
+endfunction
+
+function! goto_header#Switch()
+    let filename = expand('%:t')
+    let found = 0
+    let extensions_dict = {
+                \        ".cpp" : ".hpp",
+                \        ".hpp" : ".cpp",
+                \        ".c" : ".h",
+                \        ".h" : ".c",
+                \}
+
+    for key in keys(extensions_dict)
+        if stridx(filename, key) != -1
+            let filename = substitute(filename, key, extensions_dict[key], 'g')
+            let found = 1
+            break
+        endif
+    endfor
+    if found
+        let info_find = s:GetFindResult(filename)
+        call s:DisplayPrompt(info_find, filename)
+    else
+        echo "Can't switch from " . filename
     endif
 endfunction

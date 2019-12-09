@@ -8,3 +8,4 @@ endif
 let g:goto_header_loadded = 1
 
 command! GotoHeader :call goto_header#GotoHeader()
+command! GotoHeaderSwitch :call goto_header#Switch()
