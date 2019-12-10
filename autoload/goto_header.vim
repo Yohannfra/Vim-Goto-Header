@@ -172,9 +172,9 @@ function! goto_header#Switch()
     let found = 0
     let extensions_dict = {
                 \        ".cpp" : ".hpp",
-                \        ".hpp" : ".cpp",
                 \        ".c" : ".h",
                 \        ".h" : ".c",
+                \        ".hpp" : ".cpp",
                 \}
 
     for key in keys(extensions_dict)
@@ -185,8 +185,13 @@ function! goto_header#Switch()
         endif
     endfor
     if found
-        let info_find = s:GetFindResult(filename)
-        call s:DisplayPrompt(info_find, filename)
+        let buf_exist = bufnr(filename)
+        if buf_exist == -1
+            let info_find = s:GetFindResult(filename)
+            call s:DisplayPrompt(info_find, filename)
+        else
+            call s:OpenFile(bufname(filename))
+        endif
     else
         echo "Can't switch from " . filename
     endif
