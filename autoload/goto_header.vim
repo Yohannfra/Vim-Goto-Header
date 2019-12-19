@@ -167,6 +167,13 @@ function! goto_header#GotoHeader()
     call s:DisplayPrompt(l:info_find, l:current_line)
 endfunction
 
+function! goto_header#Direct()
+    let l:filename = input("Header name : ")
+    let s:path = ""
+    let l:info_find = s:GetFindResult(l:filename)
+    call s:DisplayPrompt(l:info_find, l:filename)
+endfunction
+
 function! goto_header#Switch()
     let filename = expand('%:t')
     let found = 0
