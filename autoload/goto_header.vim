@@ -177,6 +177,7 @@ endfunction
 function! goto_header#Switch()
     let filename = expand('%:t')
     let found = 0
+    let s:path = ""
     let extensions_dict = {
                 \        ".cpp" : ".hpp",
                 \        ".c" : ".h",
