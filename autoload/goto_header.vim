@@ -187,7 +187,7 @@ function! goto_header#Switch()
 
     for key in keys(extensions_dict)
         if stridx(filename, key) != -1
-            let filename = substitute(filename, key, extensions_dict[key], 'g')
+            let filename = filename[0:stridx(filename, '.') - 1] . extensions_dict[key]
             let found = 1
             break
         endif
