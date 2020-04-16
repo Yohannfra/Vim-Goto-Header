@@ -26,12 +26,6 @@ function! s:GetHearderName(current_line)
 endfunction
 
 function! s:CheckConfigVals()
-    if !exists("g:goto_header_includes_dirs")
-        let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
-    endif
-    if !exists('g:goto_header_excludes_dirs')
-        let g:goto_header_excludes_dirs = []
-    endif
     if !exists("g:goto_header_search_flags")
         if g:goto_header_use_find
             let g:goto_header_search_flags = "-type f"
@@ -39,6 +33,9 @@ function! s:CheckConfigVals()
             let g:goto_header_search_flags = "-t f -s"
         endif
     endif
+    let g:goto_header_includes_dirs =
+        \ get(g:, 'goto_header_includes_dirs',[".", "/usr/include", "..", "~"])
+    let g:goto_header_excludes_dirs = get(g:, 'goto_header_excludes_dirs', [])
     let g:goto_header_use_find = get(g:, 'goto_header_use_find')
     let g:goto_header_open_in_new_tab = get(g:, 'goto_header_open_in_new_tab')
     let g:goto_header_use_shorter_path = get(g:, 'goto_header_use_shorter_path')
