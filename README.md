@@ -110,6 +110,11 @@ Put the following lines in your .vimrc to map gh to switch between .c/.h or .cpp
 nnoremap gh :GotoHeaderSwitch <CR>
 ```
 
+If you need to switch between a ".cpp" file and a ".h" file (like in #2) add this to your .vimrc
+```vim
+let g:goto_header_associate_cpp_h = 1
+```
+
 Now you'll just need to press F12 on a line like one of those and it will open the corresponding file in a new tab
 ```c
 #include <stdio.h>

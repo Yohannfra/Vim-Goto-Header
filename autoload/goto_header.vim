@@ -29,14 +29,8 @@ function! s:CheckConfigVals()
     if !exists("g:goto_header_includes_dirs")
         let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
     endif
-    if !exists('g:goto_header_use_find')
-        let g:goto_header_use_find = 0
-    endif
     if !exists('g:goto_header_excludes_dirs')
         let g:goto_header_excludes_dirs = []
-    endif
-    if !exists('g:goto_header_open_in_new_tab')
-        let g:goto_header_open_in_new_tab = 0
     endif
     if !exists("g:goto_header_search_flags")
         if g:goto_header_use_find
@@ -45,9 +39,10 @@ function! s:CheckConfigVals()
             let g:goto_header_search_flags = "-t f -s"
         endif
     endif
-    if !exists('g:goto_header_use_shorter_path')
-        let g:goto_header_use_shorter_path = 0
-    endif
+    let g:goto_header_use_find = get(g:, 'goto_header_use_find')
+    let g:goto_header_open_in_new_tab = get(g:, 'goto_header_open_in_new_tab')
+    let g:goto_header_use_shorter_path = get(g:, 'goto_header_use_shorter_path')
+    let g:goto_header_associate_cpp_h = get(g:, 'goto_header_associate_cpp_h')
 endfunction
 
 function! s:OpenFile(fp)
@@ -175,14 +170,15 @@ function! goto_header#Direct()
 endfunction
 
 function! goto_header#Switch()
+    call s:CheckConfigVals()
     let filename = expand('%:t')
     let found = 0
     let s:path = ""
     let extensions_dict = {
-                \        ".cpp" : ".hpp",
+                \        ".cpp" : (g:goto_header_associate_cpp_h) ? ".h" : ".hpp",
+                \        ".hpp" : ".cpp",
                 \        ".c" : ".h",
                 \        ".h" : ".c",
-                \        ".hpp" : ".cpp",
                 \}
 
     for key in keys(extensions_dict)
