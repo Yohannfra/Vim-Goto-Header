@@ -172,14 +172,14 @@ function! goto_header#Switch()
     let found = 0
     let s:path = ""
     let extensions_dict = {
-                \        ".cpp" : (g:goto_header_associate_cpp_h) ? ".h" : ".hpp",
-                \        ".hpp" : ".cpp",
-                \        ".c" : ".h",
-                \        ".h" : ".c",
+                \        ".*.cpp$" : (g:goto_header_associate_cpp_h) ? ".h" : ".hpp",
+                \        ".*.hpp$" : ".cpp",
+                \        ".*.c$" : ".h",
+                \        ".*.h$" : ".c",
                 \}
 
     for key in keys(extensions_dict)
-        if stridx(filename, key) != -1
+        if match(filename, key) != -1
             let filename = filename[0:stridx(filename, '.') - 1] . extensions_dict[key]
             let found = 1
             break
