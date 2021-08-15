@@ -27,16 +27,11 @@ endfunction
 
 function! s:CheckConfigVals()
     if !exists("g:goto_header_search_flags")
-        if g:goto_header_use_find
-            let g:goto_header_search_flags = "-type f"
-        else
-            let g:goto_header_search_flags = "-t f -s"
-        endif
+        let g:goto_header_search_flags = "-t f -s"
     endif
     let g:goto_header_includes_dirs =
         \ get(g:, 'goto_header_includes_dirs',[".", "/usr/include", "..", "~"])
     let g:goto_header_excludes_dirs = get(g:, 'goto_header_excludes_dirs', [])
-    let g:goto_header_use_find = get(g:, 'goto_header_use_find')
     let g:goto_header_open_in_new_tab = get(g:, 'goto_header_open_in_new_tab')
     let g:goto_header_use_shorter_path = get(g:, 'goto_header_use_shorter_path')
     let g:goto_header_associate_cpp_h = get(g:, 'goto_header_associate_cpp_h')
@@ -85,20 +80,15 @@ function! s:GetFindResult(current_line)
     " Delete CLRF
     let l:current_line = substitute(l:current_line, '', '', 'g')
 
-    if g:goto_header_use_find == 0
-        let l:exclude_command = " "
-        for l:dir in g:goto_header_excludes_dirs
-            let l:exclude_command = l:exclude_command . "--exclude " . l:dir . ' '
-        endfor
-    endif
+    let l:exclude_command = " "
+    for l:dir in g:goto_header_excludes_dirs
+        let l:exclude_command = l:exclude_command . "--exclude " . l:dir . ' '
+    endfor
+
 
     let l:info_find = []
     for l:dir in g:goto_header_includes_dirs
-        if g:goto_header_use_find == 0
-            let l:info_find = systemlist('fd -L ' . g:goto_header_search_flags . l:exclude_command .' ^' . l:current_line . '$ ' . l:dir . ' 2> /dev/null')
-        else
-            let l:info_find = systemlist('find -L ' . l:dir . ' ' .  g:goto_header_search_flags . ' -name ' . l:current_line . ' 2> /dev/null')
-        endif
+        let l:info_find = systemlist(g:goto_header_fd_binary_name . ' -L ' . g:goto_header_search_flags . l:exclude_command .' ^' . l:current_line . '$ ' . l:dir . ' 2> /dev/null')
         if len(l:info_find) != 0
             break
         endif

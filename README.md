@@ -7,9 +7,8 @@ Example :\
 ![alt text](.github/gif2.gif "Utilisation example")
 
 ## Dependencies
-By default Goto-Header uses [fd](https://github.com/sharkdp/fd) (a find alternative) to look for headers.\
+Goto-Header uses [fd](https://github.com/sharkdp/fd) (a find alternative) to look for headers.\
 To install it on your system see : https://github.com/sharkdp/fd#installation \
-If you want to use find instead refer to the [configuration](#Configuration) section.
 
 ## Installation
 
@@ -24,12 +23,6 @@ git clone https://github.com/Yohannfra/Vim-Goto-Header/ ~/.vim/plugin/
 ```
 
 ## Configuration
-
-#### Find utility
-To use find instead of fd just put this line in your .vimrc
-```vim
-let g:goto_header_use_find = 1 " By default it's value is 0
-```
 
 ### How to open the file
 By default the file you open will be in the same tab.\
@@ -69,13 +62,11 @@ let g:goto_header_excludes_dirs = ["~/Music", "~/Logiciels", "~/Pictures", "~/Do
 ```
 #### Flags
 
-Both fd and find use -L flag (follow symlink). You can't change it using the following lines.
+fd uses -L flag (follow symlink). You can't change it using the following lines, it must stay.
 
-You can customize other fd/find flags by putting this in your .vimrc
+You can customize other fd flags by putting this in your .vimrc
 ```vim
 let g:goto_header_fd_command = "-t f -s" " Use any flag you want except -L
-" or if you want to use find
-let g:goto_header_search_flags = "-type f" " Use any flag you want except -L
 ```
 
 #### Prompt
@@ -90,7 +81,6 @@ g:goto_header_use_shorter_path = 1
 The default configuration is the following one:
 ```vim
 let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
-let g:goto_header_use_find = 0      " keep using fd
 let g:goto_header_search_flags = "-t f -s"
 let g:goto_header_excludes_dirs = []
 let g:goto_header_open_in_new_tab = 0
