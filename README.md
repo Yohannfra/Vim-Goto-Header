@@ -32,13 +32,13 @@ let g:goto_header_open_in_new_tab = 1
 ```
 
 #### Directories
-By default the script will look in those directories (in this order):
+By default the script will look in these directories (in this order):
 - .
 - /usr/include
 - ..
 - ~
 
-To change the directories or the order you put this in your .vimrc
+To change the directories or the order add this in your .vimrc
 ```vim
 let g:goto_header_includes_dirs = ["DIR1", "DIR2", "DIR3.", "DIR4"]
 
