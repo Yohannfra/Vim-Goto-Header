@@ -8,7 +8,7 @@ Example :\
 
 ## Dependencies
 Goto-Header uses [fd](https://github.com/sharkdp/fd) (a find alternative) to look for headers.\
-To install it on your system see : https://github.com/sharkdp/fd#installation \
+To install it on your system see : https://github.com/sharkdp/fd#installation
 
 ## Installation
 
