@@ -177,7 +177,7 @@ function! goto_header#Switch()
     endfor
     if found
         let buf_exist = bufnr(filename)
-        if buf_exist == -1
+        if buf_exist == -1 || !filereadable(bufname(filename))
             let info_find = s:GetFindResult(filename)
             call s:DisplayPrompt(info_find, filename)
         else
