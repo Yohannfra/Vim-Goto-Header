@@ -165,7 +165,7 @@ function! goto_header#Switch()
                 \        ".*.cpp$" : (g:goto_header_associate_cpp_h) ? ".h" : ".hpp",
                 \        ".*.hpp$" : ".cpp",
                 \        ".*.c$" : ".h",
-                \        ".*.h$" : ".c",
+                \        ".*.h$" :  (g:goto_header_associate_cpp_h)? ".cpp" : ".c",
                 \}
 
     for key in keys(extensions_dict)
